@@ -38,9 +38,9 @@
         <div class="mt-4 rounded-2xl border border-slate-200/10 bg-black/20 p-4">
           <p class="text-sm font-semibold text-slate-200/90">Estado</p>
           @if (queueCount() === 0) {
-          <p class="mt-1 text-sm text-slate-300/85">No hay tickets en la cola.</p>
+            <p class="mt-1 text-sm text-slate-300/85">No hay tickets en la cola.</p>
           } @else {
-          <p class="mt-1 text-sm text-slate-300/85">Hay tickets esperando en la cola.</p>
+            <p class="mt-1 text-sm text-slate-300/85">Hay tickets esperando en la cola.</p>
           }
           <p class="mt-2 text-xs text-slate-300/70">En cola: {{ queueCount() }}</p>
         </div>
@@ -52,6 +52,7 @@
             type="button"
             class="inline-flex w-full min-h-12 items-center justify-center rounded-full border border-slate-200/15 bg-white/5 px-5 py-3 text-center text-sm font-semibold leading-snug text-white/90 transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300/70 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-50 whitespace-normal"
             [disabled]="!canTakeNextTicket()"
+            (click)="takeNextTicket(false)"
           >
             Tomar siguiente ticket
           </button>
@@ -60,6 +61,7 @@
             type="button"
             class="inline-flex w-full min-h-12 items-center justify-center rounded-full border border-amber-400/30 bg-amber-500/15 px-5 py-3 text-center text-sm font-semibold leading-snug text-white/90 transition hover:bg-amber-500/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300/70 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-50 whitespace-normal"
             [disabled]="!canTakeNextTicket()"
+            (click)="takeNextTicket(true)"
           >
             Forzar normal
           </button>
@@ -90,7 +92,7 @@
             </div>
 
             <div
-              class="w-full max-w-[240px] rounded-2xl border border-slate-200/10 bg-black/20 p-4 text-center"
+              class="w-full max-w-60 rounded-2xl border border-slate-200/10 bg-black/20 p-4 text-center"
               aria-label="Escritorio actual"
             >
               <p class="text-sm font-semibold text-slate-200/90">Escritorio</p>
@@ -107,22 +109,28 @@
           <p class="mt-1 text-sm text-slate-300/85">Máximo 8 para lectura rápida.</p>
 
           @if (recentTickets().length === 0) {
-          <div class="mt-4 rounded-2xl border border-slate-200/10 bg-black/20 p-4">
-            <p class="text-sm text-slate-300/85">No hay tickets recientes para este escritorio.</p>
-          </div>
+            <div class="mt-4 rounded-2xl border border-slate-200/10 bg-black/20 p-4">
+              <p class="text-sm text-slate-300/85">
+                No hay tickets recientes para este escritorio.
+              </p>
+            </div>
           } @else {
-          <ol class="mt-4 space-y-2" aria-label="Listado de tickets atendidos recientemente">
-            @for (ticket of recentTickets(); track ticket.id) {
-            <li class="rounded-2xl border border-slate-200/10 bg-black/20 px-4 py-3">
-              <div class="flex items-center justify-between gap-4">
-                <p class="text-sm font-semibold text-white/90">{{ ticket.id }}</p>
-                <p class="text-xs text-slate-300/70">
-                  @if (ticket.category === 'priority') { Prioritario } @else { Normal }
-                </p>
-              </div>
-            </li>
-            }
-          </ol>
+            <ol class="mt-4 space-y-2" aria-label="Listado de tickets atendidos recientemente">
+              @for (ticket of recentTickets(); track ticket.id) {
+                <li class="rounded-2xl border border-slate-200/10 bg-black/20 px-4 py-3">
+                  <div class="flex items-center justify-between gap-4">
+                    <p class="text-sm font-semibold text-white/90">{{ ticket.id }}</p>
+                    <p class="text-xs text-slate-300/70">
+                      @if (ticket.prefix === 'P') {
+                        Prioritario
+                      } @else {
+                        Normal
+                      }
+                    </p>
+                  </div>
+                </li>
+              }
+            </ol>
           }
         </article>
       </div>

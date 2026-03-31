@@ -10,6 +10,8 @@ import {
 } from '@angular/core';
 import { WeatherWidget } from '../../components/weather-widget/weather-widget';
 import { YouTubePlayer } from '../../components/youtube-player/youtube-player';
+import { Ticket } from '../../types';
+import { TicketService } from '../../services/ticket.service';
 
 @Component({
   selector: 'app-board-page',
@@ -18,6 +20,7 @@ import { YouTubePlayer } from '../../components/youtube-player/youtube-player';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardPage {
+  private readonly ticketService = inject(TicketService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
@@ -34,16 +37,7 @@ export class BoardPage {
   protected readonly timeText = computed(() => formatTimeEs(this.nowMs()));
   protected readonly dateText = computed(() => formatDateEs(this.nowMs()));
 
-  protected readonly attendedTickets = signal<AttendedTicket[]>([
-    { id: 'A-024', desk: 'Escritorio 2' },
-    { id: 'B-118', desk: 'Escritorio 1' },
-    { id: 'A-023', desk: 'Escritorio 3' },
-    { id: 'C-007', desk: 'Escritorio 4' },
-    { id: 'A-022', desk: 'Escritorio 2' },
-    { id: 'B-117', desk: 'Escritorio 1' },
-    { id: 'A-021', desk: 'Escritorio 5' },
-    { id: 'C-006', desk: 'Escritorio 4' },
-  ]);
+  protected readonly attendedTickets = computed(() => this.ticketService.recentTickets());
 
   constructor() {
     if (!this.isBrowser) return;
@@ -58,11 +52,6 @@ export class BoardPage {
   protected toggleMute(): void {
     this.isMuted.update((prev) => !prev);
   }
-}
-
-interface AttendedTicket {
-  id: string;
-  desk: string;
 }
 
 function formatTimeEs(epochMs: number): string {

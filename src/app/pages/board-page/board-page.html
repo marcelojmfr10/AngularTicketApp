@@ -50,7 +50,12 @@
                 [attr.aria-pressed]="!isMuted()"
                 (click)="toggleMute()"
               >
-                Audio: @if (isMuted()) { Apagado } @else { Encendido }
+                Audio:
+                @if (isMuted()) {
+                  Apagado
+                } @else {
+                  Encendido
+                }
               </button>
             </div>
           </div>
@@ -85,44 +90,48 @@
 
           <div class="flex flex-col gap-3 p-4 lg:min-h-0 lg:overflow-auto">
             @if (attendedTickets().length > 0) {
-            <div
-              class="rounded-2xl border border-sky-300/25 bg-sky-500/10 px-4 py-4 shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
-              aria-label="Ticket más reciente"
-            >
-              <div class="flex items-center justify-between gap-3">
-                <span
-                  class="inline-flex items-center rounded-full border border-sky-300/25 bg-sky-500/15 px-2.5 py-1 text-[11px] font-bold tracking-[0.22em] text-white/85"
-                >
-                  AHORA
-                </span>
-                <span class="text-xs font-semibold text-white/70">Turno / Puesto</span>
-              </div>
+              <div
+                class="rounded-2xl border border-sky-300/25 bg-sky-500/10 px-4 py-4 shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+                aria-label="Ticket más reciente"
+              >
+                <div class="flex items-center justify-between gap-3">
+                  <span
+                    class="inline-flex items-center rounded-full border border-sky-300/25 bg-sky-500/15 px-2.5 py-1 text-[11px] font-bold tracking-[0.22em] text-white/85"
+                  >
+                    AHORA
+                  </span>
+                  <span class="text-xs font-semibold text-white/70">Turno / Puesto</span>
+                </div>
 
-              <div class="mt-3 flex items-end justify-between gap-4">
-                <p class="text-4xl font-extrabold tracking-tight text-white tabular-nums">
-                  {{ attendedTickets()[0]?.id }}
-                </p>
-                <p class="text-base font-bold text-white/90">{{ attendedTickets()[0]?.desk }}</p>
+                <div class="mt-3 flex items-end justify-between gap-4">
+                  <p class="text-4xl font-extrabold tracking-tight text-white tabular-nums">
+                    {{ attendedTickets()[0]?.id }}
+                  </p>
+                  <p class="text-base font-bold text-white/90">
+                    {{ attendedTickets()[0]?.deskNumber }}
+                  </p>
+                </div>
               </div>
-            </div>
             }
 
             <ol class="space-y-2" aria-label="Listado de tickets atendidos">
               @for (ticket of attendedTickets().slice(1); track ticket.id) {
-              <li class="rounded-2xl border border-slate-200/15 bg-black/20 px-5 py-4">
-                <div class="flex items-center justify-between gap-4">
-                  <p class="text-2xl font-extrabold tracking-tight text-white tabular-nums">
-                    {{ ticket.id }}
-                  </p>
-                  <p class="text-xl font-bold text-white/90">{{ ticket.desk }}</p>
-                </div>
-              </li>
+                <li class="rounded-2xl border border-slate-200/15 bg-black/20 px-5 py-4">
+                  <div class="flex items-center justify-between gap-4">
+                    <p class="text-2xl font-extrabold tracking-tight text-white tabular-nums">
+                      {{ ticket.id }}
+                    </p>
+                    <p class="text-xl font-bold text-white/90">{{ ticket.deskNumber }}</p>
+                  </div>
+                </li>
               }
               <!-- No hay tickets atendidos -->
               @empty {
-              <li class="text-center rounded-2xl border border-slate-200/15 bg-black/20 px-5 py-4">
-                <p class="text-sm text-slate-300/70">Pronto empezaremos <br />a atender turnos</p>
-              </li>
+                <li
+                  class="text-center rounded-2xl border border-slate-200/15 bg-black/20 px-5 py-4"
+                >
+                  <p class="text-sm text-slate-300/70">Pronto empezaremos <br />a atender turnos</p>
+                </li>
               }
             </ol>
           </div>
