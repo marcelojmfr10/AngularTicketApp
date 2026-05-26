@@ -17,7 +17,7 @@ export class Navbar implements OnDestroy {
     .pipe(
       filter((event) => event instanceof NavigationEnd),
       map((event: NavigationEnd) => event.url),
-      startWith(this.router.url)
+      startWith(this.router.url),
     )
     .subscribe((url) => {
       this.isHidden.set(this.hiddenRoutes.includes(url));

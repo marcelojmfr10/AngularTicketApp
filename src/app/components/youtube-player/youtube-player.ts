@@ -45,7 +45,7 @@ type YouTubePlayerOptions = {
 type YouTubeApi = {
   Player: new (
     element: HTMLElement | string,
-    options: YouTubePlayerOptions
+    options: YouTubePlayerOptions,
   ) => YouTubePlayerInstance;
 };
 
@@ -81,7 +81,7 @@ function ensureYouTubeIframeApiReady(): Promise<void> {
     }
 
     const existingScript = document.querySelector<HTMLScriptElement>(
-      'script[data-youtube-iframe-api="true"]'
+      'script[data-youtube-iframe-api="true"]',
     );
 
     if (!existingScript) {

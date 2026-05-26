@@ -46,7 +46,7 @@ function formatTemperatureC(temperatureC: number): string {
 async function fetchOpenMeteoCurrentWeather(
   latitude: number,
   longitude: number,
-  signal: AbortSignal
+  signal: AbortSignal,
 ): Promise<WeatherData> {
   const url = new URL('https://api.open-meteo.com/v1/forecast');
   url.searchParams.set('latitude', String(latitude));
@@ -140,7 +140,7 @@ export class WeatherWidget {
           const nextWeather = await fetchOpenMeteoCurrentWeather(
             latitude,
             longitude,
-            controller.signal
+            controller.signal,
           );
 
           if (isCancelled) return;
